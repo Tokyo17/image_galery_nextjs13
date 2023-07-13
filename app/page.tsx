@@ -14,10 +14,10 @@ export default function Home() {
   const[showIndex,setShowIndex]=useState<number|null>(null)
   const [screenSize,setScreenSize]=useState([false,false,false])
   const [layar,setLayar]=useState(0)
-  const [json,setJson]=useState<any>()
+  // const [json,setJson]=useState<any>()
   const [isLoading,setIsloading]=useState(true)
   
-  const{imagesSplits,setImageSplits}=useMyContext();
+  const{imagesSplits,setImageSplits,json,setJson}=useMyContext();
 
 
   useEffect(()=>{
@@ -43,6 +43,7 @@ export default function Home() {
 
 
   useEffect(()=>{
+    console.log(layar)
     if(layar<=600&&layar!=0&&screenSize[0]==false&&json){
       split3(setImageSplits,json)
       let newScreenSize=[...screenSize]
@@ -51,6 +52,7 @@ export default function Home() {
       newScreenSize[2]=false
       setScreenSize(newScreenSize)
     }else if(layar>600&&layar<=800&&screenSize[1]==false&&json){
+      console.log("sedang")
       split4(setImageSplits,json)
       let newScreenSize=[...screenSize]
       newScreenSize[0]=false
@@ -58,6 +60,7 @@ export default function Home() {
       newScreenSize[2]=false
       setScreenSize(newScreenSize)
     }else if(layar>800&&screenSize[2]==false&&json){
+      console.log("besar")
       split5(setImageSplits,json)
       let newScreenSize=[...screenSize]
       newScreenSize[0]=false
