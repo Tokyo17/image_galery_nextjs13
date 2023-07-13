@@ -31,15 +31,15 @@
 }
 .img-caption{
   /* border: 1px solid black; */
-  /* width: 85%; */
+  width: 80%;
   text-align: justify;
   font-family: sans-serif;
   font-size: 15px;
 }
 .img-nav{
   display: flex;
-  justify-content: end;
-   /* margin-right: 5px; */
+  justify-content: flex-end;
+   margin-right: 5px;
   position: relative;
   margin-top: -15px; 
 }
@@ -52,7 +52,7 @@
     background: white;
     /* border: 1px solid; */
     border-radius: 5px;
-    transform: translate(-10px, 30px);
+    transform: translate(-5px, -60px);
     width: 80px;
     height: 70px;
     display: flex;
@@ -71,7 +71,7 @@
   cursor: pointer;
 }
 .img-nav-action p:hover{
-  background-color: rgb(211, 211, 255);  
+  background-color: rgb(214, 214, 255);  
 }
 .img-nav-action p:nth-child(1):hover{
   border-top-left-radius: 5px;
@@ -80,6 +80,17 @@
 .img-nav-action p:nth-child(2):hover{
  border-bottom-left-radius: 5px;
  border-bottom-right-radius: 5px;
+}
+
+/* ===========SKELETON========== */
+.skeleton-content{
+  margin: 5px;
+}
+.skeleton-img{
+  border-radius: 10px;
+}
+.skeleton-caption{
+  margin-top: 5px;
 }
 
 
