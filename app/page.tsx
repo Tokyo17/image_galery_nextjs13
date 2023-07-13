@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Navbar from './nav';
 import SkeletonImage from './component/skeletonImage'
 import ImgContent from './component/imgContent';
-import { split3, split4 } from './functionHandler';
+import { split3, split4,split5 } from './functionHandler';
 import { getImages } from './apiHandler';
 import { useMyContext } from './MyContext';
 
@@ -12,30 +12,28 @@ import { useMyContext } from './MyContext';
 export default function Home() {
 
   const[showIndex,setShowIndex]=useState<number|null>(null)
-  const [cols, setCols] = useState<any[][]>([[], [], [], []]);
-  const [screenSize,setScreenSize]=useState([false,false])
+  const [screenSize,setScreenSize]=useState([false,false,false])
   const [layar,setLayar]=useState(0)
   const [json,setJson]=useState<any>()
   const [isLoading,setIsloading]=useState(true)
   
-  const{message,setMessage}=useMyContext();
-
+  const{imagesSplits,setImageSplits}=useMyContext();
 
 
   useEffect(()=>{
-    console.log(cols)
-  },[cols])
-
-  useEffect(()=>{
-    if(window.innerWidth<=600){
-      split3(setCols,message)
-    }else if(window.innerHeight>600){
-      split4(setCols,message)
+    if(json){
+      if(window.innerWidth<=600){
+        split3(setImageSplits,json)
+      }else if(window.innerWidth>600&&window.innerWidth<=800){
+        split4(setImageSplits,json)
+      }else if(window.innerWidth>800){
+        split5(setImageSplits,json)
+      }
     }
-  },[message])
+  },[json])
 
   useEffect(()=>{
-    getImages(setIsloading,setMessage)    
+    getImages(setIsloading,setJson)    
   },[])
 
   useEffect(()=>{
@@ -45,17 +43,26 @@ export default function Home() {
 
 
   useEffect(()=>{
-    if(layar<=600&&layar!=0&&screenSize[0]==false){
-      split3(setCols,message)
+    if(layar<=600&&layar!=0&&screenSize[0]==false&&json){
+      split3(setImageSplits,json)
       let newScreenSize=[...screenSize]
       newScreenSize[0]=true
       newScreenSize[1]=false
+      newScreenSize[2]=false
       setScreenSize(newScreenSize)
-    }else if(layar>600&&screenSize[1]==false){
-      split4(setCols,message)
+    }else if(layar>600&&layar<=800&&screenSize[1]==false&&json){
+      split4(setImageSplits,json)
       let newScreenSize=[...screenSize]
       newScreenSize[0]=false
       newScreenSize[1]=true
+      newScreenSize[2]=false
+      setScreenSize(newScreenSize)
+    }else if(layar>800&&screenSize[2]==false&&json){
+      split5(setImageSplits,json)
+      let newScreenSize=[...screenSize]
+      newScreenSize[0]=false
+      newScreenSize[1]=false
+      newScreenSize[2]=true
       setScreenSize(newScreenSize)
     }
   },[layar])
@@ -75,10 +82,8 @@ const navImgHandler=(index:number)=>{
   return (
     <div>
         <Navbar/>
-        {/* {message}
-        <button onClick={()=>{setMessage("hayhay")}}>change message</button> */}
         <div className="row">
-          <ImgContent cols={cols} showIndex={showIndex} navImgHandler={navImgHandler}/> 
+          <ImgContent imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
             {isLoading&& <SkeletonImage/>}
         </div>
    </div>

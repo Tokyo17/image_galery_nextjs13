@@ -9,7 +9,7 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
       const res=await fetch("/api")
       const json=await res.json()
       if(json){
-        console.log(json)
+        // console.log(json)
         setJson(json)
       }
     }catch(err){

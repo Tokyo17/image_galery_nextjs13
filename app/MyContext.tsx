@@ -1,11 +1,11 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
-  message: any;
-  setMessage: (message: any) => void;
+  imagesSplits: any[][];
+  setImageSplits: (message: any) => void;
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -25,11 +25,12 @@ type MyContextProviderProps = {
 };
 
 const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
-  const [message, setMessage] = useState<any>();
+  const [imagesSplits, setImageSplits] =useState<any[][]>([[], [], [], [],[]]);
+
 
   const contextValue: MyContextType = {
-    message,
-    setMessage,
+    imagesSplits,
+    setImageSplits,
   };
 
   return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;

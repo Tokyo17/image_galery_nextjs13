@@ -40,6 +40,11 @@ export default function SkeletonImage({width}:props){
                         {Skeleton("h-72")}
                         {Skeleton("h-72")}
                 </div>
+                <div role="status" className="colum skeleton  animate-pulse ">
+                    {Skeleton("h-60")}
+                        {Skeleton("h-80")}
+                        {Skeleton("h-72")}
+                </div>
          </>
         
         )

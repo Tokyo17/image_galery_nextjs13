@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 
 
-export default function ImgContent({cols,showIndex,navImgHandler}:any){
+export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     const updRef = useRef<HTMLDivElement>(null);
     const delRef = useRef<HTMLDivElement>(null);
   
@@ -17,11 +17,12 @@ export default function ImgContent({cols,showIndex,navImgHandler}:any){
     } else if(updRef.current?.isEqualNode(target)==false||delRef.current?.isEqualNode(target)==false){
       console.log('keluar nav')
       navImgHandler(showIndex)
+      console.log(showIndex)
     }
   };
 
     return<>
-        {cols.map((v:any, i:any) => {
+        {imagesSplits.map((v:any, i:any) => {
           if(v.length>0){
             return (
               <div onMouseDown={handleMouseDown} key={i} className="colum">
