@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     const updRef = useRef<HTMLDivElement>(null);
     const delRef = useRef<HTMLDivElement>(null);
+    const dotRef = useRef<HTMLDivElement>(null);
   
 
     
@@ -14,12 +15,13 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     const target = event.target as HTMLElement;
     if (updRef.current?.isEqualNode(target)||delRef.current?.isEqualNode(target)) {
       console.log('klik didalam nav');
-    } else if(updRef.current?.isEqualNode(target)==false||delRef.current?.isEqualNode(target)==false){
-      console.log('keluar nav')
+    } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&dotRef.current?.isEqualNode(target)==false){
+      console.log('keluar nav2')
       navImgHandler(showIndex)
       console.log(showIndex)
     }
   };
+
 
     return<>
         {imagesSplits.map((v:any, i:any) => {
@@ -32,7 +34,7 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
                 <div className='img-information'>
                   <div className='img-caption'>{v.caption}</div>
                   <div className='img-nav'>
-                    <div  onClick={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
+                    <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
                     {showIndex===v.id && <div   className='img-nav-action'>                   
                        <p ref={updRef}>Update</p>
                        <p ref={delRef}>Delete</p>

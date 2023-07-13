@@ -77,6 +77,7 @@ export default function Home() {
 
 
 const navImgHandler=(index:number)=>{
+  console.log(index)
   setShowIndex(index === showIndex ? null : index);
 }
 
