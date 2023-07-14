@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Suspense } from 'react'
 import MyContextProvider from './MyContext'
+import Navbar from './nav'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,9 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <meta name="google" content="notranslate"></meta>
    
       <body className={inter.className}>
         <MyContextProvider>
+          <Navbar/>
           {children}
         </MyContextProvider>
 

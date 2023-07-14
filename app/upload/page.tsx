@@ -1,52 +1,44 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import Image from "next/image"
+import { ChangeEvent, useEffect, useState } from "react"
+import img1 from "../asset/1.jpg"
+import uploadIcon from "../asset/upload-solid.svg"
 
-const InfiniteScrollExample = () => {
-  const [data, setData] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export default function upload(){
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    const [selectedImage,setSelectedImage]=useState<string|null>(null)
 
-  const fetchData = () => {
-    // Simulate API call or fetching data from a data source
-    setIsLoading(true);
-    setTimeout(() => {
-      const newData = Array.from({ length: 10 }, (_, index) => data.length + index + 1);
-      setData((prevData) => [...prevData, ...newData]);
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  const handleScroll = () => {
-    // Check if user has scrolled to the bottom of the page
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      fetchData();
+    const selectedImageHandler=(event:ChangeEvent<HTMLInputElement>)=>{
+        const target= event.target.files?.[0]
+        if(target){
+            const reader=new FileReader()
+            reader.onload=()=>{
+                setSelectedImage(reader.result as string)
+            }
+            reader.readAsDataURL(target);
+        }
     }
-  };
+    useEffect(()=>{
+        console.log(selectedImage)
+    },[selectedImage])
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  return (
-    <div>
-      {data.map((item) => (
-        <div key={item} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc' }}>
-          Item {item}
+    return(
+        <div className="form">
+            <div className="preview">
+               {selectedImage==null? <div className="before-select-img">Preview</div> :
+                <Image src={selectedImage?selectedImage:''} alt='preview' width={200} height={100}/>}
+            </div>
+            <input id="inputGambar" type="file" accept="image/*" onChange={selectedImageHandler}/>
+            <label htmlFor="inputGambar" className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">Choose File</label>
+            <textarea placeholder="Write short caption..." className="border-2 p-4 border-gray-200  focus:outline-none focus:bg-white focus:border-sky-300"/>
+            <button className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">
+                {/* <Image src={uploadIcon} width={32} height={32} alt="upload icon"/> */}
+                Button
+            </button>
+            <div>
+                
+            </div>
         </div>
-      ))}
-      {isLoading && <div>Loading...</div>}
-    </div>
-  );
-};
-
-export default InfiniteScrollExample;
+    )
+}

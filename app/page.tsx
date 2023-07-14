@@ -11,7 +11,7 @@ import { useMyContext } from './MyContext';
 
 export default function Home() {
 
-  const[showIndex,setShowIndex]=useState<number|null>(null)
+  const[showIndex,setShowIndex]=useState<number|null|string>(null)
   const [screenSize,setScreenSize]=useState([false,false,false])
   const [layar,setLayar]=useState(0)
   // const [json,setJson]=useState<any>()
@@ -76,16 +76,16 @@ export default function Home() {
   }
 
 
-const navImgHandler=(index:number)=>{
+const navImgHandler=(index:number|null|string)=>{
   console.log(index)
-  setShowIndex(index === showIndex ? null : index);
+  setShowIndex(index === showIndex && index=="tutup" ? null : index);
 }
 
 
 
   return (
     <div>
-        <Navbar/>
+        
         <div className="row">
           <ImgContent imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
             {isLoading&& <SkeletonImage/>}
