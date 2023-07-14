@@ -18,7 +18,6 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&dotRef.current?.isEqualNode(target)==false){
       console.log('keluar nav2')
       navImgHandler(showIndex)
-      console.log(showIndex)
     }
   };
 
