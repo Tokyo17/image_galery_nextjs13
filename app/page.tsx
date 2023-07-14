@@ -14,6 +14,7 @@ export default function Home() {
   const[showIndex,setShowIndex]=useState<number|null>(null)
   const [screenSize,setScreenSize]=useState([false,false,false])
   const [layar,setLayar]=useState(0)
+  const [refresh,setRefresh]=useState(false)
   // const [json,setJson]=useState<any>()
   const [isLoading,setIsloading]=useState(true)
   
@@ -33,8 +34,9 @@ export default function Home() {
   },[json])
 
   useEffect(()=>{
+    console.log("get after del")
     getImages(setIsloading,setJson)    
-  },[])
+  },[refresh])
 
   useEffect(()=>{
     window.addEventListener("resize",screenHandler)
@@ -87,7 +89,7 @@ const navImgHandler=(index:number|null)=>{
     <div>
         
         <div className="row">
-          <ImgContent imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
+          <ImgContent refresh={refresh} setRefresh={setRefresh} imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
             {isLoading&& <SkeletonImage/>}
         </div>
    </div>

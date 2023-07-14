@@ -13,6 +13,7 @@ datasource db {
 
 model Images {
   id      Int      @id @default(autoincrement())
+  img_name  String
   url   String  @unique
   caption String?
 }

@@ -1,10 +1,13 @@
 "use client"
+import { deleteObject, ref } from "firebase/storage";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { storage } from "../firebase";
+import { useRouter } from "next/navigation";
 
 
 
-export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
+export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefresh,refresh}:any){
     const updRef = useRef<HTMLDivElement>(null);
     const delRef = useRef<HTMLDivElement>(null);
     const dotRef = useRef<HTMLDivElement>(null);
@@ -21,6 +24,30 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     }
   };
 
+  const router=useRouter()
+
+  const deleteFirebase=(name:any)=>{
+    const filreRef=ref(storage,`files/${name}`)
+    deleteObject(filreRef).then(()=>{
+      console.log("del firebase success")
+      setRefresh(!refresh)
+      router.refresh()
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  const deleteHandler=async (id:any,name:any)=>{
+    await fetch("api?id="+id,{
+      method:"DELETE"
+    }).then(()=>{
+      console.log("del prisma success")
+      deleteFirebase(name)
+    }).catch(err=>{
+      console.log(err)
+    })
+
+  }
 
     return<>
         {imagesSplits.map((v:any, i:any) => {
@@ -36,7 +63,7 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
                     <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
                     {showIndex===v.id && <div   className='img-nav-action'>                   
                        <p ref={updRef}>Update</p>
-                       <p ref={delRef}>Delete</p>
+                       <p onClick={()=>{deleteHandler(v.id,v.img_name)}} ref={delRef}>Delete</p>
                     </div>}
                   </div>
                 </div>
