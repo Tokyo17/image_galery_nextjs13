@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { useRouter } from "next/navigation";
+import { deleteHandler } from "../apiHandler";
 
 
 
@@ -16,38 +17,15 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefr
     
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
+    console.log(target)
+    console.log(dotRef.current?.isEqualNode(target))
+
     if (updRef.current?.isEqualNode(target)||delRef.current?.isEqualNode(target)) {
-      console.log('klik didalam nav');
-    } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&dotRef.current?.isEqualNode(target)==false){
-      console.log('keluar nav2')
+    } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&!dotRef.current?.isEqualNode(target)){
       navImgHandler(showIndex)
     }
   };
 
-  const router=useRouter()
-
-  const deleteFirebase=(name:any)=>{
-    const filreRef=ref(storage,`files/${name}`)
-    deleteObject(filreRef).then(()=>{
-      console.log("del firebase success")
-      setRefresh(!refresh)
-      router.refresh()
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }
-
-  const deleteHandler=async (id:any,name:any)=>{
-    await fetch("api?id="+id,{
-      method:"DELETE"
-    }).then(()=>{
-      console.log("del prisma success")
-      deleteFirebase(name)
-    }).catch(err=>{
-      console.log(err)
-    })
-
-  }
 
     return<>
         {imagesSplits.map((v:any, i:any) => {
@@ -63,7 +41,7 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefr
                     <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
                     {showIndex===v.id && <div   className='img-nav-action'>                   
                        <p ref={updRef}>Update</p>
-                       <p onClick={()=>{deleteHandler(v.id,v.img_name)}} ref={delRef}>Delete</p>
+                       <p onClick={()=>{deleteHandler(v.id,v.img_name,setRefresh,refresh)}} ref={delRef}>Delete</p>
                     </div>}
                   </div>
                 </div>

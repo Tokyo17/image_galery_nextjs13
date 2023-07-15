@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma=new PrismaClient()
 
 export const GET =async(req:NextRequest)=>{
-    const images=await prisma.images.findMany({})
+    const images=await prisma.images.findMany({
+        orderBy:{id:"desc"}
+    })
     return NextResponse.json(images)
 }
 
@@ -33,3 +35,4 @@ export const DELETE=async(req:NextRequest)=>{
     }
     return NextResponse.json("Delete Succes")
 }
+

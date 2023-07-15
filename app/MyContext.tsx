@@ -30,6 +30,9 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [imagesSplits, setImageSplits] =useState<any[][]>([[], [], [], [],[]]);
   const [json, setJson] =useState<any>();
 
+  useEffect(()=>{
+    console.log(imagesSplits)
+  },[imagesSplits])
 
   const contextValue: MyContextType = {
     imagesSplits,
