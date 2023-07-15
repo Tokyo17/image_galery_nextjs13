@@ -30,21 +30,63 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
   const deleteFirebase=(name:any,setRefresh:Dispatch<SetStateAction<boolean>>,refresh:boolean)=>{
     const filreRef=ref(storage,`files/${name}`)
     deleteObject(filreRef).then(()=>{
+      Swal.fire({
+        title:'Delete Success!',
+        icon:'success',
+        timer: 2000,
+        showConfirmButton:false
+      })
       console.log("del firebase success")
       setRefresh(!refresh)
     }).catch((err)=>{
       console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      })
     })
   }
 
   export const deleteHandler=async (id:any,name:string,setRefresh:Dispatch<SetStateAction<boolean>>,refresh:boolean)=>{
-    await fetch("api?id="+id,{
-      method:"DELETE"
-    }).then(()=>{
-      console.log("del prisma success")
-      deleteFirebase(name,setRefresh,refresh)
-    }).catch(err=>{
-      console.log(err)
+
+    Swal.fire({
+      title: 'Do you want to delete?',
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Don't Delete`,
+    }).then( async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+
+          Swal.fire({
+            title: 'Process Deleting!',
+            html: 'please waiting for a seconds.',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
+          })
+
+        await fetch("api?id="+id,{
+          method:"DELETE"
+        }).then(()=>{
+          console.log("del prisma success")
+          deleteFirebase(name,setRefresh,refresh)
+        }).catch(err=>{
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
+        })
+      } else if (result.isDenied) {
+        // Swal.fire('Changes are not saved', '', 'info')
+      }
     })
 
   }
@@ -76,6 +118,11 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
             router.push("/")
         }).catch(err=>{
             console.log(err)
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+            })
         })
         
     }
@@ -84,31 +131,47 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
 export   const uploadHandler=(imageFile:any,caption:string,router:any)=>{
         const randomNumber=Math.random().toFixed(4).slice(2)
         const generateImgName=`${imageFile?.name}${randomNumber}`
+
+
         Swal.fire({
-          title: 'Process Uploading!',
-          html: 'please waiting for a seconds.',
-          didOpen: () => {
-              Swal.showLoading()
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-          allowEnterKey: false
-          })
-        if(imageFile){
-             const storageRef=ref(storage,`files/${generateImgName}`)
-            const uploadTask=uploadBytesResumable(storageRef,imageFile)
+          title: 'Do you want to upload?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Upload',
+          denyButtonText: `Don't Upload`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+                Swal.fire({
+                  title: 'Process Uploading!',
+                  html: 'please waiting for a seconds.',
+                  didOpen: () => {
+                      Swal.showLoading()
+                  },
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  allowEnterKey: false
+                  })
+                if(imageFile){
+                    const storageRef=ref(storage,`files/${generateImgName}`)
+                    const uploadTask=uploadBytesResumable(storageRef,imageFile)
+        
+                    uploadTask.on("state_changed",
+                    ()=>{
+        
+                    },(err)=>{
+                        console.log(err)
+                    },()=>{
+                        getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
+                            uploadPrismaHandler(url,generateImgName,caption,router)                      
+                        })
+                    }
+                    )
+                }
+          } else if (result.isDenied) {
+            // Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
 
-            uploadTask.on("state_changed",
-            ()=>{
 
-            },(err)=>{
-                console.log(err)
-            },()=>{
-                getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
-                    uploadPrismaHandler(url,generateImgName,caption,router)
-                    // console.log(url)
-                })
-            }
-            )
-        }
     }
