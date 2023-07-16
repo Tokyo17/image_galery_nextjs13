@@ -1,11 +1,7 @@
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
-import { useMyContext } from "./MyContext"
 import { storage } from "./firebase"
 import { Dispatch, SetStateAction } from "react"
-import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
-import { title } from "process"
-import { Html } from "next/document"
 
 
 

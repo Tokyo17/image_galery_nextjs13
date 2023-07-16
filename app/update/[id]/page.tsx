@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
 
 
-export default function upload({params}:{params:{id:string}}){
+export default function Update({params}:{params:{id:string}}){
 
     const [imagePreview,setImagePreview]=useState<string|null>(null)
     
