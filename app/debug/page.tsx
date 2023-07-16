@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const debug = () => {
+const Debug = () => {
   const [data, setData] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,4 +49,4 @@ const debug = () => {
   );
 };
 
-export default debug;
+export default Debug;

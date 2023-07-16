@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { uploadHandler } from "../apiHandler"
 import Swal from "sweetalert2"
 
-export default function upload(){
+export default function Upload(){
 
     const [selectedImagePreview,setSelectedImagePreview]=useState<string|null>(null)
     const [imageFile,setImageFile]=useState<any>(undefined)
