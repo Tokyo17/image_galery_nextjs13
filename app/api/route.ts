@@ -36,3 +36,24 @@ export const DELETE=async(req:NextRequest)=>{
     return NextResponse.json("Delete Succes")
 }
 
+
+
+export const PUT=async(req:NextRequest)=>{
+    const {id,caption}=await req.json()
+    console.log("id : ",id)
+    const image=await prisma.images.update({
+        where:{
+            id:Number(id)
+        },
+        data:{
+            caption:caption
+        }
+    })
+    if(!image.id){
+        return NextResponse.json({message:"error"},{status:404})
+    }
+    return NextResponse.json({
+        message:"update success",
+        data:{image}
+    })
+}

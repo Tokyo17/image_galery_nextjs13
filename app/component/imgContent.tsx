@@ -26,6 +26,11 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefr
     }
   };
 
+  const router=useRouter()
+
+const  updateHandler=(id:number)=>{
+    router.push(`/update/${id}`)
+  }
 
     return<>
         {imagesSplits.map((v:any, i:any) => {
@@ -40,7 +45,7 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefr
                   <div className='img-nav'>
                     <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
                     {showIndex===v.id && <div   className='img-nav-action'>                   
-                       <p ref={updRef}>Update</p>
+                       <p onClick={()=>{updateHandler(v.id)}} ref={updRef}>Update</p>
                        <p onClick={()=>{deleteHandler(v.id,v.img_name,setRefresh,refresh)}} ref={delRef}>Delete</p>
                     </div>}
                   </div>

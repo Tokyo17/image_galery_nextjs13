@@ -27,6 +27,8 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
   }
 
 
+  // ================================DELETE==============================
+
   const deleteFirebase=(name:any,setRefresh:Dispatch<SetStateAction<boolean>>,refresh:boolean)=>{
     const filreRef=ref(storage,`files/${name}`)
     deleteObject(filreRef).then(()=>{
@@ -93,6 +95,7 @@ export const getImages=async(setIsloading:any,setJson:any)=>{
 
 
 
+  // =====================UPLOAD==========================
   
 
     const uploadPrismaHandler=async(url:any,img_name:any,caption:string,router:any)=>{
@@ -132,46 +135,57 @@ export   const uploadHandler=(imageFile:any,caption:string,router:any)=>{
         const randomNumber=Math.random().toFixed(4).slice(2)
         const generateImgName=`${imageFile?.name}${randomNumber}`
 
-
-        Swal.fire({
-          title: 'Do you want to upload?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Upload',
-          denyButtonText: `Don't Upload`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-                Swal.fire({
-                  title: 'Process Uploading!',
-                  html: 'please waiting for a seconds.',
-                  didOpen: () => {
-                      Swal.showLoading()
-                  },
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                  allowEnterKey: false
-                  })
-                if(imageFile){
-                    const storageRef=ref(storage,`files/${generateImgName}`)
-                    const uploadTask=uploadBytesResumable(storageRef,imageFile)
-        
-                    uploadTask.on("state_changed",
-                    ()=>{
-        
-                    },(err)=>{
-                        console.log(err)
-                    },()=>{
-                        getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
-                            uploadPrismaHandler(url,generateImgName,caption,router)                      
+        if(imageFile){
+              Swal.fire({
+                title: 'Do you want to upload?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+                denyButtonText: `Don't Upload`,
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                      Swal.fire({
+                        title: 'Process Uploading!',
+                        html: 'please waiting for a seconds.',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false
                         })
-                    }
-                    )
+                      if(imageFile){
+                          const storageRef=ref(storage,`files/${generateImgName}`)
+                          const uploadTask=uploadBytesResumable(storageRef,imageFile)
+              
+                          uploadTask.on("state_changed",
+                          ()=>{
+              
+                          },(err)=>{
+                              console.log(err)
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                              })
+                          },()=>{
+                              getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
+                                  uploadPrismaHandler(url,generateImgName,caption,router)                      
+                              })
+                          }
+                          )
+                      }
+                } else if (result.isDenied) {
+                  // Swal.fire('Changes are not saved', '', 'info')
                 }
-          } else if (result.isDenied) {
-            // Swal.fire('Changes are not saved', '', 'info')
-          }
-        })
-
+              })
+        }else{
+          Swal.fire({
+            icon: 'info',
+            title: 'Info',
+            text: 'Please input your image',
+          })
+        }
 
     }

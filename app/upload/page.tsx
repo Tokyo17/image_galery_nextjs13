@@ -30,20 +30,16 @@ export default function upload(){
         // console.log(selectedImagePreview)
     },[selectedImagePreview])
 
-    const showAlert=()=>{
-
-    }
 
     return(
         <div className="form">
             <div className="preview">
-               {selectedImagePreview==null? <div className="before-select-img">Preview</div> :
+               {selectedImagePreview==null? <div className="before-select-img">Image Preview</div> :
                 <Image src={selectedImagePreview?selectedImagePreview:''} alt='preview' width={200} height={100}/>}
             </div>
             <input id="inputGambar" type="file" accept="image/*" onChange={selectedImageHandler}/>
             <label htmlFor="inputGambar" className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">Choose File</label>
             <textarea onChange={(e)=>{setCaption(e.target.value)}} placeholder="Write short caption..." className="border-2 p-4 border-gray-200  focus:outline-none focus:bg-white focus:border-sky-300"/>
-            {/* uploadHandler(imageFile,caption,router) */}
             <button onClick={()=>{uploadHandler(imageFile,caption,router)}} className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">
                 Button
             </button>
