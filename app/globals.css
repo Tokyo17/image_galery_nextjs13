@@ -44,6 +44,7 @@
   text-align: justify;
   font-family: "Times New Roman", Times, serif;
   font-size: 15px;
+  overflow-x: hidden;
 }
 .img-nav{
   display: flex;
@@ -167,8 +168,13 @@
   display: none;
 }
 
+textarea{
+  height: 120px;
+  font-size: 15px;
+}
 
-@media screen and (max-width: 800px) {
+
+@media screen and (max-width: 900px) {
   .colum {
       max-width: 25%;
   }
@@ -178,16 +184,24 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .colum {
     max-width: 33.33%;
   }
   .skeleton:nth-child(4){
     display: none;
-    /* border: 2px solid red; */
   }
   .img-caption{
     font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .colum {
+    max-width: 50%;
+  }
+  .skeleton:nth-child(3){
+    display: none;
   }
 }
 

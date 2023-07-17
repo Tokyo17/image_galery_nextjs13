@@ -54,3 +54,19 @@ export const split3 = (setCols:any,json:any) => {
       return newCols; // Mengembalikan array kolom yang diperbarui
     });
   };
+
+
+  export const split2 = (setCols:any,json:any) => {
+
+    setCols(() => {
+      const newCols:number[][] = [[], [], [], [],[]];
+      json?.map((v:any,i:number)=>{
+      if((i+1)%2==1){
+        newCols[0].push(v)
+      }else if((i+1)%2==0){
+        newCols[1].push(v)
+      }
+    })
+      return newCols; // Mengembalikan array kolom yang diperbarui
+    });
+  };

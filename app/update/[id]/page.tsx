@@ -4,6 +4,7 @@ import Image from "next/image"
 import { ChangeEvent, SetStateAction, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
+import { getData, updateData } from "@/app/apiHandler"
 
 
 export default function Update({params}:{params:{id:string}}){
@@ -16,77 +17,6 @@ export default function Update({params}:{params:{id:string}}){
     const id=params.id
 
 
-    const updateData=async()=>{
-        Swal.fire({
-            title: 'Process get data!',
-            html: 'please waiting for a seconds.',
-            didOpen: () => {
-                Swal.showLoading()
-            },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false
-          })
-
-            await fetch("/api",{
-                method:"PUT",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({
-                    id:id,
-                    caption:caption
-                })
-            }).then((res)=>{
-                if(res.status==200){
-                   Swal.fire({
-                    title:'Success!',
-                    icon:'success',
-                    timer: 1000,
-                    showConfirmButton:false
-                  })
-                    router.push("/")
-                }else{
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                      })
-                }
-            }).catch((err)=>{
-                console.log(err)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                  })
-            })
-    }
-    const getData=async()=>{
-        console.log(id)
-        try{
-            const res=await fetch("/api/"+id)
-            const json=await res.json()
-            setImagePreview(json.url||'')
-            setCaption(json.caption||'')
-            if(json){
-                Swal.fire({
-                    title:'Success!',
-                    icon:'success',
-                    timer: 1000,
-                    showConfirmButton:false
-                  })
-            }
-        }catch(err){
-            console.log(err)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
-              })
-            //   router.push("/")
-        }
-    }
 
     useEffect(()=>{
         console.log(imagePreview)
@@ -98,7 +28,7 @@ export default function Update({params}:{params:{id:string}}){
             html: 'please waiting for a seconds.',
             didOpen: () => {
                 Swal.showLoading()
-                getData()
+                getData(id,setImagePreview,setCaption)
             },
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -120,8 +50,8 @@ export default function Update({params}:{params:{id:string}}){
                 : 
                 <Image src={imagePreview?imagePreview:''} alt='preview' width={200} height={100}/>} 
             </div>
-            <textarea disabled={imagePreview?false:true} style={imagePreview?{}:{cursor:"not-allowed"}} value={caption} onChange={(e)=>{setCaption(e.target.value)}} placeholder="Write short caption..." className="border-2 p-4 border-gray-200  focus:outline-none focus:bg-white focus:border-sky-300 my-2"/>
-            <button disabled={imagePreview?false:true} style={imagePreview?{}:{cursor:"not-allowed"}}  onClick={()=>{updateData()}} className=" bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">
+            <textarea maxLength={70} disabled={imagePreview?false:true} style={imagePreview?{}:{cursor:"not-allowed"}} value={caption} onChange={(e)=>{setCaption(e.target.value)}} placeholder="Write short caption..." className="border-2 p-4 border-gray-200  focus:outline-none focus:bg-white focus:border-sky-300 my-2"/>
+            <button disabled={imagePreview?false:true} style={imagePreview?{}:{cursor:"not-allowed"}}  onClick={()=>{updateData(id,caption,router)}} className=" bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded">
                 Button
             </button>
             <div>
