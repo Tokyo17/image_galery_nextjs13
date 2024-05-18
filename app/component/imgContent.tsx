@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { useRouter } from "next/navigation";
-import { deleteHandler } from "../apiHandler";
+// import { deleteHandler } from "../apiHandler";
 
 
 
@@ -48,7 +48,10 @@ const  updateHandler=(id:number)=>{
                     <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
                     {showIndex===v.id && <div   className='img-nav-action'>                   
                        <p onClick={()=>{updateHandler(v.id)}} ref={updRef}>Update</p>
-                       <p onClick={()=>{deleteHandler(v.id,v.img_name,setRefresh,refresh)}} ref={delRef}>Delete</p>
+                       <p onClick={()=>{
+                        // deleteHandler(v.id,v.img_name,setRefresh,refresh)
+                      }}
+                         ref={delRef}>Delete</p>
                     </div>}
                   </div>
                 </div>
