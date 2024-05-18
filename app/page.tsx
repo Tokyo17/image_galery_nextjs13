@@ -5,7 +5,7 @@ import Navbar from './nav';
 import SkeletonImage from './component/skeletonImage'
 import ImgContent from './component/imgContent';
 import { split2, split3, split4,split5 } from './functionHandler';
-import { getImages } from './apiHandler';
+// import { getImages } from './apiHandler';
 import { useMyContext } from './MyContext';
 import { gql, useQuery } from '@apollo/client';
 // import { getPlaiceholder } from 'plaiceholder';
@@ -37,7 +37,7 @@ export default function Home() {
 
   useEffect(()=>{
     console.log("get after del")
-    getImages(setIsloading,setJson)    
+    // getImages(setIsloading,setJson)    
   },[refresh])
 
   useEffect(()=>{
