@@ -7,6 +7,7 @@ import ImgContent from './component/imgContent';
 import { split2, split3, split4,split5 } from './functionHandler';
 import { getImages } from './apiHandler';
 import { useMyContext } from './MyContext';
+import { gql, useQuery } from '@apollo/client';
 // import { getPlaiceholder } from 'plaiceholder';
 
 
@@ -45,10 +46,17 @@ export default function Home() {
   })
 
 
+  const GetData=gql`query MyQuery {
+    galery(order_by: {id: desc}) {
+      url
+      id
+    }
+  }
+  
+  `
   useEffect(()=>{
     const widthScreen=window.innerWidth
     console.log(widthScreen)
-    
         if(widthScreen<=500&&screenSize[0]==false){
           console.log("split2")
           split2(setImageSplits,json)
@@ -99,15 +107,23 @@ const navImgHandler=(index:number|null)=>{
   setShowIndex(index === showIndex  ? null : index);
 }
 
-// useEffect(()=>{
-//   console.log(imagesSplits)
-// },[])
+const { loading, error, data:dataAll } = useQuery(GetData,{
+
+  onCompleted:()=>{
+    setJson(dataAll.galery)
+    console.log(dataAll)
+},
+  fetchPolicy: "network-only",   // Used for first execution
+  nextFetchPolicy: "cache-and-network" // Doesn't check cache before making a network request
+});
+
+
   return (
     <div>
         
         <div className="row">
           <ImgContent refresh={refresh} setRefresh={setRefresh} imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
-            {isLoading&& imagesSplits[0].length<1 ? <SkeletonImage/>:''}
+            {loading&& imagesSplits[0].length<1 ? <SkeletonImage/>:''}
         </div>
    </div>
   )

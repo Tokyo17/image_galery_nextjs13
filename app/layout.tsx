@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { Suspense } from 'react'
 import MyContextProvider from './MyContext'
 import Navbar from './nav'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,6 +19,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+
+
+  
   return (
     <html lang="en">
       <meta name="google" content="notranslate"></meta>

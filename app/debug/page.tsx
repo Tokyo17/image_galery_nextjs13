@@ -1,5 +1,6 @@
 "use client"
 
+import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 const Debug = () => {
@@ -36,6 +37,9 @@ const Debug = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+
+
 
   return (
     <div>

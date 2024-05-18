@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = 'mysql://3ubtea4er0mwzeujh55r:pscale_pw_3eatw4Lu62Ctq1uP7d3UJlZsqXTTzgucbcofspOHHeD@aws.connect.psdb.cloud/belajar?sslaccept=strict'
 }
 
 

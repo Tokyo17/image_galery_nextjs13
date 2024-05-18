@@ -1,6 +1,17 @@
 "use client"
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
+
+
+const client = new ApolloClient({
+  uri: 'https://optimum-corgi-31.hasura.app/v1/graphql',
+  headers:{
+    "x-hasura-admin-secret":
+    "dKHsPm53cqnlHZuM3TpUiqgGsVxicG36KEDxAhw2cUeKfOB5R4TS2ab8vRkUaLy9"
+  },
+  cache: new InMemoryCache(),
+});
 
 // Definisikan tipe data untuk context
 export type MyContextType = {
@@ -41,7 +52,13 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     setJson
   };
 
-  return <MyContext.Provider value={contextValue}>{children}</MyContext.Provider>;
+
+  return <MyContext.Provider value={contextValue}>
+    <ApolloProvider client={client}>
+    {children}
+    </ApolloProvider>
+    
+    </MyContext.Provider>;
 };
 
 export default MyContextProvider;
