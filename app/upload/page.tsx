@@ -8,7 +8,9 @@ type UploadProps = {
   AddImg: (options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>> | undefined) => Promise<any>;
 };
 
-export default function Upload({ AddImg }: UploadProps) {
+const Upload: React.FC<
+UploadProps
+> = (props) => {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [caption, setCaption] = useState<string>("");
 
@@ -36,7 +38,7 @@ export default function Upload({ AddImg }: UploadProps) {
       />
       <button
         onClick={() => {
-          uploadHandler(imageFile, caption, AddImg);
+          uploadHandler(imageFile, caption, props.AddImg);
         }}
         className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded"
       >
@@ -45,3 +47,5 @@ export default function Upload({ AddImg }: UploadProps) {
     </div>
   );
 }
+
+export default Upload
