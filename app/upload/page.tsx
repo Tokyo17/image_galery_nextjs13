@@ -5,7 +5,7 @@ import { uploadHandler } from "../useApi";
 import { ApolloCache, DefaultContext, MutationFunctionOptions, OperationVariables, useMutation } from "@apollo/client";
 
 type UploadProps = {
-  AddImg: (options?: MutationFunctionOptions<any, OperationVariables, DefaultContext, ApolloCache<any>> | undefined) => Promise<any>;
+  AddImg: any
 };
 
 const Upload: React.FC<
