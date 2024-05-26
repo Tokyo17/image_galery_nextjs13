@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { useRouter } from "next/navigation";
+import useApi from "../useApi";
 // import { deleteHandler } from "../apiHandler";
 
 
@@ -16,22 +17,22 @@ export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefr
 
     
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLElement;
-    // console.log(target)
-    // console.log(dotRef.current?.isEqualNode(target))
+    // const target = event.target as HTMLElement;
+    // // console.log(target)
+    // // console.log(dotRef.current?.isEqualNode(target))
 
-    if (updRef.current?.isEqualNode(target)||delRef.current?.isEqualNode(target)) {
-    } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&!dotRef.current?.isEqualNode(target)){
-      navImgHandler(showIndex)
-    }
+    // if (updRef.current?.isEqualNode(target)||delRef.current?.isEqualNode(target)) {
+    // } else if(updRef.current?.isEqualNode(target)==false&&delRef.current?.isEqualNode(target)==false&&!dotRef.current?.isEqualNode(target)){
+    //   navImgHandler(showIndex)
+    // }
   };
 
-  const router=useRouter()
+//   const router=useRouter()
 
-const  updateHandler=(id:number)=>{
-    router.push(`/update/${id}`)
-  }
-
+// const  updateHandler=(id:number)=>{
+//     router.push(`/update/${id}`)
+//   }
+const {deleteImg}=useApi()
   const blur="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAABaCAQAAADTVfQ2AAAAD0lEQVR42mM8Vc84imAIAEBzdAVlXschAAAAAElFTkSuQmCC"
 
     return<>
@@ -45,14 +46,9 @@ const  updateHandler=(id:number)=>{
                 <div className='img-information'>
                   <div className='img-caption'>{v.caption}</div>
                   <div className='img-nav'>
-                    <div  ref={dotRef} onMouseDown={()=>{navImgHandler(v.id)}} className='dot-nav' >...</div>
-                    {showIndex===v.id && <div   className='img-nav-action'>                   
-                       <p onClick={()=>{updateHandler(v.id)}} ref={updRef}>Update</p>
-                       <p onClick={()=>{
-                        // deleteHandler(v.id,v.img_name,setRefresh,refresh)
-                      }}
-                         ref={delRef}>Delete</p>
-                    </div>}
+                   {v.name!="Example"&&
+                    <div  ref={dotRef} onMouseDown={()=>{deleteImg(v.name)}} className='dot-nav' >x</div>
+                    }
                   </div>
                 </div>
                 </div> 

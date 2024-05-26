@@ -7,9 +7,23 @@ import ImgContent from './component/imgContent';
 import { split2, split3, split4,split5 } from './functionHandler';
 // import { getImages } from './apiHandler';
 import { useMyContext } from './MyContext';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { Dialog, DialogPanel } from '@headlessui/react';
+import Upload from './upload/page';
+import useApi, { showSucces } from './useApi';
+import { useRouter } from 'next/navigation';
 // import { getPlaiceholder } from 'plaiceholder';
 
+
+const GetData=gql`query MyQuery {
+  galery(order_by: {id: desc}) {
+    url
+    id
+    caption
+  }
+}
+
+`
 
 export default function Home() {
 
@@ -18,8 +32,8 @@ export default function Home() {
   const [layar,setLayar]=useState(0)
   const [refresh,setRefresh]=useState(false)
   const [isLoading,setIsloading]=useState(true)
-  const{imagesSplits,setImageSplits,json,setJson}=useMyContext();
-
+  const{imagesSplits,setImageSplits,json,setJson,isOpen,setIsOpen}=useMyContext();
+  const {getData,AddImg,loading}=useApi()
 
   useEffect(()=>{
     if(json){
@@ -45,15 +59,6 @@ export default function Home() {
   
   })
 
-
-  const GetData=gql`query MyQuery {
-    galery(order_by: {id: desc}) {
-      url
-      id
-    }
-  }
-  
-  `
   useEffect(()=>{
     const widthScreen=window.innerWidth
     console.log(widthScreen)
@@ -107,20 +112,25 @@ const navImgHandler=(index:number|null)=>{
   setShowIndex(index === showIndex  ? null : index);
 }
 
-const { loading, error, data:dataAll } = useQuery(GetData,{
 
-  onCompleted:()=>{
-    setJson(dataAll.galery)
-    console.log(dataAll)
-},
-  fetchPolicy: "network-only",   // Used for first execution
-  nextFetchPolicy: "cache-and-network" // Doesn't check cache before making a network request
-});
 
+
+
+useEffect(()=>{
+  getData()
+},[])
 
   return (
     <div>
+     <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50 ">
+        <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 rounded ">
+          <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 rounded-md">
+            <Upload AddImg={AddImg} />
+          </DialogPanel>
+        </div>
         
+      </Dialog>
         <div className="row">
           <ImgContent refresh={refresh} setRefresh={setRefresh} imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
             {loading&& imagesSplits[0].length<1 ? <SkeletonImage/>:''}

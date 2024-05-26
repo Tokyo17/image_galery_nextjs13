@@ -19,6 +19,8 @@ export type MyContextType = {
   setImageSplits: (message: any) => void;
   json: any;
   setJson: (message: any) => void;
+  isOpen:boolean,
+  setIsOpen:(message:boolean)=>void
 };
 
 // Buat instance context dengan tipe data yang telah ditentukan
@@ -40,6 +42,7 @@ type MyContextProviderProps = {
 const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
   const [imagesSplits, setImageSplits] =useState<any[][]>([[], [], [], [],[]]);
   const [json, setJson] =useState<any>();
+  const [isOpen,setIsOpen]=useState(false)
 
   useEffect(()=>{
     console.log(imagesSplits)
@@ -49,7 +52,9 @@ const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
     imagesSplits,
     setImageSplits,
     json,
-    setJson
+    setJson,
+    isOpen,
+    setIsOpen
   };
 
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
+    "@headlessui/react": "^2.0.3",
     "@plaiceholder/next": "^3.0.0",
     "@types/node": "^20.4.1",
     "@types/react": "18.2.14",

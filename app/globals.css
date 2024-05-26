@@ -56,6 +56,9 @@
 .dot-nav{
   font-size: 20px;
   cursor: pointer;
+  margin-top: 10px;
+  font-weight: 500;
+    color: red;
 }
 .img-nav-action{
   position: absolute;
