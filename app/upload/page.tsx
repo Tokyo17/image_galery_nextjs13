@@ -4,13 +4,8 @@ import { ChangeEvent, useState } from "react";
 import { uploadHandler } from "../useApi";
 import { ApolloCache, DefaultContext, MutationFunctionOptions, OperationVariables, useMutation } from "@apollo/client";
 
-type UploadProps = {
-  AddImg: any
-};
 
-const Upload: React.FC<
-UploadProps
-> = (props) => {
+const Upload = (props: { AddImg: Function }) => {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [caption, setCaption] = useState<string>("");
 
