@@ -2,8 +2,6 @@
 
 import { ChangeEvent, useState } from "react";
 import { uploadHandler } from "../useApi";
-import { ApolloCache, DefaultContext, MutationFunctionOptions, OperationVariables, useMutation } from "@apollo/client";
-
 
 const Upload = (props: { AddImg: Function }) => {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
