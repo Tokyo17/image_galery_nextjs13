@@ -15,25 +15,14 @@ import { useRouter } from 'next/navigation';
 // import { getPlaiceholder } from 'plaiceholder';
 
 
-const GetData=gql`query MyQuery {
-  galery(order_by: {id: desc}) {
-    url
-    id
-    caption
-  }
-}
-
-`
-
 export default function Home() {
 
   const[showIndex,setShowIndex]=useState<number|null>(null)
   const [screenSize,setScreenSize]=useState([false,false,false,false])
   const [layar,setLayar]=useState(0)
   const [refresh,setRefresh]=useState(false)
-  const [isLoading,setIsloading]=useState(true)
   const{imagesSplits,setImageSplits,json,setJson,isOpen,setIsOpen}=useMyContext();
-  const {getData,AddImg,loading}=useApi()
+  const {AddImg,loading,getData,dataAdd}=useApi()
 
   useEffect(()=>{
     if(json){
@@ -114,11 +103,12 @@ const navImgHandler=(index:number|null)=>{
 
 
 
-
-
 useEffect(()=>{
-  getData()
-},[])
+getData()
+console.log("MODAL : ",isOpen)
+},[isOpen])
+
+
 
   return (
     <div>
@@ -126,7 +116,7 @@ useEffect(()=>{
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 rounded ">
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-12 rounded-md">
-            <Upload AddImg={AddImg} />
+            <Upload/>
           </DialogPanel>
         </div>
         

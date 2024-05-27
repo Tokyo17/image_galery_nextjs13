@@ -12,7 +12,6 @@ const {setIsOpen}=useMyContext()
 
         <h1><Link href="/">Moment Gallery</Link></h1>
         <div className="navbar-add-img" onClick={()=>setIsOpen(true)}>
-            {/* <Link href="/upload">+</Link> */}
             +
         </div>
     </div>

@@ -71,8 +71,8 @@ const delImg=gql`mutation MyMutation($_eq: String = "") {
 
 const useApi = () => {
   const{setJson,setIsOpen}=useMyContext();
- const[getData, { loading, error, data:dataAll }] = useLazyQuery(GetData,{
-  
+
+ const[getData, { loading, error, data:dataAll,refetch }] = useLazyQuery(GetData,{
     onCompleted:()=>{
       setJson(dataAll.galery)
       console.log(dataAll)
@@ -81,18 +81,19 @@ const useApi = () => {
     nextFetchPolicy: "cache-and-network" // Doesn't check cache before making a network request
   });
   
-  const [AddImg, { data, loading:tunggu, error:errorAdd }] = useMutation(addImg,{
+  const [AddImg, { data:dataAdd, loading:tunggu, error:errorAdd }] = useMutation(addImg,{
     onCompleted:()=>{
         showSucces("Upload success")
-        console.log(data)
-        getData()
         setIsOpen(false)
     }
   });
 
+
+  
+
   const [DelImg, { data:dataDel, loading:loadDel, error:errorDel }] = useMutation(delImg,{
     onCompleted:()=>{
-        console.log(data)
+        console.log(dataDel)
         
         showSucces("Delete success")
         getData()
@@ -128,7 +129,62 @@ const useApi = () => {
   
   }
 
-  return { getData,loading,AddImg,deleteImg };
+  const uploadHandler=(imageFile:any,caption:string)=>{
+    
+    const randomNumber=Math.random().toFixed(4).slice(2)
+    const generateImgName=`${imageFile?.name}${randomNumber}`
+
+
+    if(imageFile){
+          Swal.fire({
+            title: 'Do you want to upload?',
+            showCancelButton: true,
+            confirmButtonText: 'Upload',
+            denyButtonText: `Don't Upload`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+
+               showLoading('Process Uploading!')
+                  if(imageFile){
+                      const storageRef=ref(storage,`files/${generateImgName}`)
+                      const uploadTask=uploadBytesResumable(storageRef,imageFile)
+          
+                      uploadTask.on("state_changed",
+                      ()=>{
+          
+                      },(err)=>{
+                          console.log(err)
+                          showError()
+                      },()=>{
+                          getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
+                            
+                              AddImg({
+                                variables:{
+                                    caption:caption,
+                                    url:url,
+                                    name:generateImgName
+                                }
+                              })                     
+                          })
+                      }
+                      )
+                  }
+            } else if (result.isDenied) {
+              // Swal.fire('Changes are not saved', '', 'info')
+            }
+          })
+    }else{
+      Swal.fire({
+        icon: 'info',
+        title: 'Info',
+        text: 'Please input your image',
+      })
+    }
+
+}
+
+  return { getData,loading,AddImg,deleteImg,uploadHandler,dataAdd };
 };
 
 export default useApi;
@@ -213,61 +269,6 @@ export default useApi;
 //     }
 
     
-export   const uploadHandler=(imageFile:any,caption:string,AddImg:any)=>{
-    
-        const randomNumber=Math.random().toFixed(4).slice(2)
-        const generateImgName=`${imageFile?.name}${randomNumber}`
-
-
-        if(imageFile){
-              Swal.fire({
-                title: 'Do you want to upload?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Upload',
-                denyButtonText: `Don't Upload`,
-              }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-  
-                   showLoading('Process Uploading!')
-                      if(imageFile){
-                          const storageRef=ref(storage,`files/${generateImgName}`)
-                          const uploadTask=uploadBytesResumable(storageRef,imageFile)
-              
-                          uploadTask.on("state_changed",
-                          ()=>{
-              
-                          },(err)=>{
-                              console.log(err)
-                              showError()
-                          },()=>{
-                              getDownloadURL(uploadTask.snapshot.ref).then((url)=>{
-                                
-                                  AddImg({
-                                    variables:{
-                                        caption:caption,
-                                        url:url,
-                                        name:generateImgName
-                                    }
-                                  })                     
-                              })
-                          }
-                          )
-                      }
-                } else if (result.isDenied) {
-                  // Swal.fire('Changes are not saved', '', 'info')
-                }
-              })
-        }else{
-          Swal.fire({
-            icon: 'info',
-            title: 'Info',
-            text: 'Please input your image',
-          })
-        }
-
-    }
 
 
 

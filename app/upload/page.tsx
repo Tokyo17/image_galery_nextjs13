@@ -1,9 +1,9 @@
 "use client"
 
 import { ChangeEvent, useState } from "react";
-import { uploadHandler } from "../useApi";
+import useApi from "../useApi";
 
-const Upload = (props: { AddImg: Function }) => {
+const Upload = () => {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [caption, setCaption] = useState<string>("");
 
@@ -16,6 +16,7 @@ const Upload = (props: { AddImg: Function }) => {
     }
   };
 
+  const {uploadHandler}=useApi()
   return (
     <div className="form">
       <div className="w-[250px] overflow-x-hidden text-ellipsis whitespace-nowrap text-center">{imageFile?.name}</div>
@@ -31,7 +32,7 @@ const Upload = (props: { AddImg: Function }) => {
       />
       <button
         onClick={() => {
-          uploadHandler(imageFile, caption, props.AddImg);
+          uploadHandler(imageFile, caption);
         }}
         className="my-2 bg-transparent hover:bg-sky-300 text-sky-500 font-semibold hover:text-white py-2 px-4 border border-sky-300 hover:border-transparent rounded"
       >

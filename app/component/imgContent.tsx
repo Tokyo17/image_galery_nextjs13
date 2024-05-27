@@ -9,7 +9,7 @@ import useApi from "../useApi";
 
 
 
-export default function ImgContent({imagesSplits,showIndex,navImgHandler,setRefresh,refresh}:any){
+export default function ImgContent({imagesSplits,showIndex,navImgHandler}:any){
     const updRef = useRef<HTMLDivElement>(null);
     const delRef = useRef<HTMLDivElement>(null);
     const dotRef = useRef<HTMLDivElement>(null);
