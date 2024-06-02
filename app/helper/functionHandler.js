@@ -1,9 +1,9 @@
 
 
-export const split4 = (setCols:any,json:any) => {
+export const split4 = (setCols,json) => {
   setCols(() => {
-    const newCols:number[][] = [[], [], [], [],[]];
-    json?.map((v:any,i:any)=>{
+    const newCols = [[], [], [], [],[]];
+    json?.map((v,i)=>{
     if((i+1)%4==1){
       newCols[0].push(v)
     }else if((i+1)%4==2){
@@ -14,14 +14,14 @@ export const split4 = (setCols:any,json:any) => {
       newCols[3].push(v)
     }
   })
-    return newCols; // Mengembalikan array kolom yang diperbarui
+    return newCols;
   });
 };
 
-export const split5 = (setCols:any,json:any) => {
+export const split5 = (setCols,json) => {
     setCols(() => {
-      const newCols:number[][] = [[], [], [], [],[]];
-      json?.map((v:any,i:any)=>{
+      const newCols = [[], [], [], [],[]];
+      json?.map((v,i)=>{
       if((i+1)%5==1){
         newCols[0].push(v)
       }else if((i+1)%5==2){
@@ -34,15 +34,15 @@ export const split5 = (setCols:any,json:any) => {
         newCols[4].push(v)
       }
     })
-      return newCols; // Mengembalikan array kolom yang diperbarui
+      return newCols;
     });
   };
 
-export const split3 = (setCols:any,json:any) => {
+export const split3 = (setCols,json) => {
 
     setCols(() => {
-      const newCols:number[][] = [[], [], [], [],[]];
-      json?.map((v:any,i:number)=>{
+      const newCols = [[], [], [], [],[]];
+      json?.map((v,i)=>{
       if((i+1)%3==1){
         newCols[0].push(v)
       }else if((i+1)%3==2){
@@ -51,22 +51,24 @@ export const split3 = (setCols:any,json:any) => {
         newCols[2].push(v)
       }
     })
-      return newCols; // Mengembalikan array kolom yang diperbarui
+      return newCols; 
     });
   };
 
 
-  export const split2 = (setCols:any,json:any) => {
+  export const split2 = (setCols,json) => {
 
     setCols(() => {
-      const newCols:number[][] = [[], [], [], [],[]];
-      json?.map((v:any,i:number)=>{
+      const newCols = [[], [], [], [],[]];
+      json?.map((v,i)=>{
       if((i+1)%2==1){
         newCols[0].push(v)
       }else if((i+1)%2==0){
         newCols[1].push(v)
       }
     })
-      return newCols; // Mengembalikan array kolom yang diperbarui
+      return newCols; 
     });
   };
+
+  

@@ -1,13 +1,15 @@
 import { Dialog, DialogPanel } from "@headlessui/react"
-import Image from "next/image"
 import useApi from "../useApi"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 
 const ModalUpdate=({data,isOpen,setIsOpen})=>{
 
-    const[caption,setCaption]=useState('')
+    const[caption,setCaption]=useState(data.caption)
+    useEffect(()=>{
+        setCaption(data.caption)
+    },[isOpen])
     const {updateImgApi}=useApi()
     return(
         <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50 ">
@@ -17,6 +19,7 @@ const ModalUpdate=({data,isOpen,setIsOpen})=>{
                 <div className="form">
                         <textarea
                             maxLength={70}
+                            value={caption}
                             onChange={(e) => setCaption(e.target.value)}
                             placeholder="Write short caption..."
                             className="border-2 p-4 border-gray-200 rounded focus:outline-none focus:bg-white focus:border-blue-500 "

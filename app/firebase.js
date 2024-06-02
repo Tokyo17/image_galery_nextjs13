@@ -1,12 +1,9 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import {getStorage} from "firebase/storage"
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBN9Hgk7fxiQIg9Fnu0EwxLs6W1RDDk_YQ",
+  apiKey: process.env.API_KEY,
   authDomain: "image-76cf3.firebaseapp.com",
   projectId: "image-76cf3",
   storageBucket: "image-76cf3.appspot.com",
