@@ -17,12 +17,12 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
-  const[showIndex,setShowIndex]=useState<number|null>(null)
+  const[showIndex,setShowIndex]=useState(null)
   const [screenSize,setScreenSize]=useState([false,false,false,false])
   const [layar,setLayar]=useState(0)
   const [refresh,setRefresh]=useState(false)
   const{imagesSplits,setImageSplits,json,setJson,isOpen,setIsOpen}=useMyContext();
-  const {AddImg,loading,getData,dataAdd}=useApi()
+  const {getDataApi,loadingApi}=useApi()
 
   useEffect(()=>{
     if(json){
@@ -96,7 +96,7 @@ export default function Home() {
   }
 
 
-const navImgHandler=(index:number|null)=>{
+const navImgHandler=(index)=>{
   console.log(index)
   setShowIndex(index === showIndex  ? null : index);
 }
@@ -104,7 +104,7 @@ const navImgHandler=(index:number|null)=>{
 
 
 useEffect(()=>{
-getData()
+  getDataApi()
 console.log("MODAL : ",isOpen)
 },[isOpen])
 
@@ -123,7 +123,7 @@ console.log("MODAL : ",isOpen)
       </Dialog>
         <div className="row">
           <ImgContent refresh={refresh} setRefresh={setRefresh} imagesSplits={imagesSplits} showIndex={showIndex} navImgHandler={navImgHandler}/> 
-            {loading&& imagesSplits[0].length<1 ? <SkeletonImage/>:''}
+            {loadingApi&& imagesSplits[0].length<1 ? <SkeletonImage/>:''}
         </div>
    </div>
   )

@@ -177,6 +177,13 @@ textarea{
 }
 
 
+.dialog{
+  width: 100%;
+}
+.dialog img{
+  width: 100%;
+}
+
 @media screen and (max-width: 900px) {
   .colum {
       max-width: 25%;

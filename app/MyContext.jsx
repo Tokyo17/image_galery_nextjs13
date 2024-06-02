@@ -13,20 +13,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// Definisikan tipe data untuk context
-export type MyContextType = {
-  imagesSplits: any[][];
-  setImageSplits: (message: any) => void;
-  json: any;
-  setJson: (message: any) => void;
-  isOpen:boolean,
-  setIsOpen:(message:boolean)=>void
-};
 
-// Buat instance context dengan tipe data yang telah ditentukan
-const MyContext = createContext<MyContextType | undefined>(undefined);
 
-// Buat custom hook untuk mengakses context
+const MyContext = createContext();
+
 export const useMyContext = () => {
   const context = useContext(MyContext);
   if (!context) {
@@ -35,20 +25,18 @@ export const useMyContext = () => {
   return context;
 };
 
-type MyContextProviderProps = {
-  children: React.ReactNode;
-};
 
-const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }) => {
-  const [imagesSplits, setImageSplits] =useState<any[][]>([[], [], [], [],[]]);
-  const [json, setJson] =useState<any>();
+
+const MyContextProvider= ({ children }) => {
+  const [imagesSplits, setImageSplits] =useState([[], [], [], [],[]]);
+  const [json, setJson] =useState();
   const [isOpen,setIsOpen]=useState(false)
 
   useEffect(()=>{
     console.log(imagesSplits)
   },[imagesSplits])
 
-  const contextValue: MyContextType = {
+  const contextValue = {
     imagesSplits,
     setImageSplits,
     json,
